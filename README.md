@@ -67,17 +67,18 @@ The app defines following CRUD APIs.
 
 
 ## Screenshots
-- reshedule appointment
-![Screenshot (973)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/4d6314b4-c675-4bd8-b23d-2e376bff143b)
 
-- Book Appointment
-![Screenshot (972)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/03300c15-05ea-4dbc-a017-f09e3d361a41)
+- Get all appointments
+![Screenshot (970)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/db1708f5-574e-4f12-9dc3-87b8e02f2747)
 
 - Get Open slots
 ![Screenshot (971)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/78c3c9b8-a60e-4359-9f2c-8b2a1d2335b2)
 
-- Get all appointments
-![Screenshot (970)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/db1708f5-574e-4f12-9dc3-87b8e02f2747)
+- Book Appointment
+![Screenshot (972)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/03300c15-05ea-4dbc-a017-f09e3d361a41)
+
+- reshedule appointment
+![Screenshot (973)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/4d6314b4-c675-4bd8-b23d-2e376bff143b)
 
 - Cancel Appointment
 ![Screenshot (974)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/1da66ab7-d26b-48f9-8770-8079a78e131f)
