@@ -6,7 +6,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 @Table(name = "appointments")
 public class Appointment {
@@ -34,51 +37,7 @@ public class Appointment {
 	@Column(name = "booked")
 	private boolean booked;
 
-	public Appointment() {
-
-	}
-
-	public Appointment(int operatorId, int scheduledTime, boolean booked) {
-		this.operatorId = operatorId;
-		this.scheduledTime = scheduledTime;
-		this.booked = booked;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public int getOperatorId() {
-		return operatorId;
-	}
-
-	public void setOperatorId(int operatorId) {
-		this.operatorId = operatorId;
-	}
-
-	public int getScheduledTime() {
-		return scheduledTime;
-	}
-
-	public void setScheduledTime(int scheduledTime) {
-		this.scheduledTime = scheduledTime;
-	}
-
-	public boolean isBooked() {
-		return booked;
-	}
-
-	public void setBooked(boolean isBooked) {
-		this.booked = isBooked;
-	}
-
-	public Date getBookedDate() {
-		return bookedDate;
-	}
-
-	public void setBookedDate(Date bookedDate) {
-		this.bookedDate = bookedDate;
-	}
+	
 
 	@Override
 	public String toString() {
