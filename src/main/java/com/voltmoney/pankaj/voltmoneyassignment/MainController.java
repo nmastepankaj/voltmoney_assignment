@@ -55,7 +55,6 @@ public class MainController {
             List<AppointmentResponse> appointments = new ArrayList<AppointmentResponse>();
 
             String strDate = getFormattedCurrentDate();
-            Date currentDate = new Date();
 
             // getting all the appointments for the operator for the current date
             List<Appointment> ls = appointmentRepository.findByBookedDate(strDate, operatorId);
@@ -117,13 +116,16 @@ public class MainController {
 
     @PostMapping("/book_appointment")
     public ResponseEntity<String> bookAppointment(@Valid @RequestBody AppointmentSaveRequest params) {
-        // This method is used to book the appointment for the operator for the current
-        // date
+        // This method is used to book the appointment for the operator for the current date
 
         try {
             Date currentDate = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String strDate = formatter.format(currentDate);
+
+            if(params.scheduledTime < 0 || params.scheduledTime > 23){
+                return new ResponseEntity<>("Invalid Time Slot", HttpStatus.BAD_REQUEST);
+            }
 
             // checking if the appointment is already booked or not
             int isExist = appointmentRepository.checkAppointmentPresent(strDate, params.operatorId,
@@ -150,10 +152,13 @@ public class MainController {
 
     @PatchMapping("/reschedule_appointment")
     public ResponseEntity<String> rescheduleAppointment(@RequestBody AppointmentRescheduleRequest params) {
-        // This method is used to reschedule the appointment for the operator for the
-        // current date
+        // This method is used to reschedule the appointment for the operator for the current date
 
         try {
+            if(params.scheduledTime < 0 || params.scheduledTime > 23){
+                return new ResponseEntity<>("Invalid Time Slot", HttpStatus.BAD_REQUEST);
+            }
+            
             String strDate = getFormattedCurrentDate();
 
             // getting appointment object by the appointment id
