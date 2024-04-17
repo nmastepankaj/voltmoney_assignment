@@ -3,9 +3,7 @@ package com.voltmoney.pankaj.voltmoneyassignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,6 +37,9 @@ public class MainController {
     }
     
     public static String getFormattedCurrentDate(){
+        // This method is used to get the formatted current date
+        // It will return the current date in the format yyyy-MM-dd
+
         Date currentDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = formatter.format(currentDate);
@@ -47,11 +48,13 @@ public class MainController {
 
     @GetMapping("/appointments/{operatorId}")
     public ResponseEntity<List<AppointmentResponse>> getALlAppointments(@PathVariable("operatorId") int operatorId) {
+        // This method is used to get all the appointments for the operator for the current date
         try {
             List<AppointmentResponse> appointments = new ArrayList<AppointmentResponse>();
             
             String strDate = getFormattedCurrentDate();
             
+            // getting all the appointments for the operator for the current date
             List<Appointment> ls = appointmentRepository.findByBookedDate(strDate, operatorId);            
 
             if (ls.isEmpty()) {
@@ -75,11 +78,14 @@ public class MainController {
 
     @GetMapping("/get_open_appointments/{operatorId}")
     public ResponseEntity<List<String>> getOpenAppointments(@PathVariable("operatorId") int operatorId){
+        // This method is used to get the open appointments for the operator for the current date
         try {
             String strDate = getFormattedCurrentDate();
             List<Appointment> ls = appointmentRepository.findByBookedDate(strDate, operatorId);
 
             AppointmentService appointmentService = new AppointmentService();
+
+            // getting the left slots of the appointments
             List<String> openAppointments = appointmentService.getLeftSlotsOfAppoints(ls);
 
             return new ResponseEntity<>(openAppointments, HttpStatus.OK);
@@ -90,12 +96,14 @@ public class MainController {
 
     @PostMapping("/book_appointment")
     public ResponseEntity<String> bookAppointment(@Valid @RequestBody AppointmentSaveRequest params) {
+        // This method is used to book the appointment for the operator for the current date
 
         try {
             Date currentDate = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String strDate = formatter.format(currentDate);
 
+            // checking if the appointment is already booked or not
             int isExist = appointmentRepository.checkAppointmentPresent(strDate, params.operatorId, params.scheduledTime);
 
             
@@ -119,14 +127,18 @@ public class MainController {
 
     @PatchMapping("/reschedule_appointment")
     public ResponseEntity<String> rescheduleAppointment(@RequestBody AppointmentRescheduleRequest params) {
+        // This method is used to reschedule the appointment for the operator for the current date
+
         try {
             String strDate = getFormattedCurrentDate();
 
+            // getting appointment object by the appointment id
             Appointment appointment_object = appointmentRepository.getAppointmentByAppointmentId(params.appointmentId);
             
             if(appointment_object == null){
                 return new ResponseEntity<>("Appointment doesn't exist", HttpStatus.NOT_FOUND);
             }else{
+                // checking if the appointment is already booked or not
                 int isExist = appointmentRepository.checkAppointmentPresent(strDate, params.operatorId, params.scheduledTime);
                 if(isExist>0){
                     return new ResponseEntity<>("Appointment Already Booked", HttpStatus.BAD_REQUEST);
@@ -143,6 +155,8 @@ public class MainController {
 
     @PatchMapping("/cancel_appointment/{id}")
     public ResponseEntity<String> cancelAppointment(@PathVariable("id") long id) {
+        // This method is used to cancel the appointment for the operator for the current date
+
         try {
             Appointment appointment_object = appointmentRepository.getAppointmentByAppointmentId(id);
             
