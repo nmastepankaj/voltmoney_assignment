@@ -1,5 +1,5 @@
 # Voltmoney Assignment
-I read the problem statement carefully and try to build the application or API for this
+I read the problem statement carefully and try to build the application or API accordingly.
 
 ### Assumptions
 
@@ -39,7 +39,7 @@ create database demo_db;
 
 ```bash
 mvn package
-java -jar target\voltmoney-assignment-0.0.1-SNAPSHOT.jar
+java -jar target/voltmoney-assignment-0.0.1-SNAPSHOT.jar
 ```
 
 Alternatively, you can run the app without packaging it using -
@@ -54,13 +54,13 @@ The app will start running at <http://localhost:8080>.
 
 The app defines following CRUD APIs.
 
-    GET /api/users
+    GET /api/appointments/{operatorId}
     
-    POST /api/get_open_appointments/{operatorId}
+    GET /api/get_open_appointments/{operatorId}
     
-    GET /api/users/{userId}
+    POST /api/book_appointment
     
-    PATCH /api/users/{userId}
+    PATCH /api/reschedule_appointment
     
-    DELETE /api/users/{userId}
+    DELETE /api/cancel_appointment/{appointmentId}
 
