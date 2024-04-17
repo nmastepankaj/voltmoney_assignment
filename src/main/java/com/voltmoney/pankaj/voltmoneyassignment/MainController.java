@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-// import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,25 +31,21 @@ public class MainController {
         return "Greetings from Spring Boot!";
     }
     
-    public static String getFormattedCurrentDate(Date currentDate){
+    public static String getFormattedCurrentDate(){
+        Date currentDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = formatter.format(currentDate);
         return strDate;
     }
 
-    @GetMapping("/appointments")
-    public ResponseEntity<List<AppointmentResponse>> getALlAppointments() {
+    @GetMapping("/appointments/{operatorId}")
+    public ResponseEntity<List<AppointmentResponse>> getALlAppointments(@PathVariable("operatorId") int operatorId) {
         try {
             List<AppointmentResponse> appointments = new ArrayList<AppointmentResponse>();
             
-            Date currentDate = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String strDate = formatter.format(currentDate);
+            String strDate = getFormattedCurrentDate();
             
-            List<Appointment> ls = appointmentRepository.findByBookedDate(strDate);
-            // ls.forEach(appointments::add);
-            // System.out.println("ls: " + ls+ "appointments: " + appointments);
-            
+            List<Appointment> ls = appointmentRepository.findByBookedDate(strDate, operatorId);            
 
             if (ls.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -71,17 +66,14 @@ public class MainController {
         }
     }
 
-    @GetMapping("/get_open_appointments")
-    public ResponseEntity<List<String>> getOpenAppointments() {
+    @GetMapping("/get_open_appointments/{operatorId}")
+    public ResponseEntity<List<String>> getOpenAppointments(@PathVariable("operatorId") int operatorId){
         try {
-            Date currentDate = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String strDate = formatter.format(currentDate);
-            List<Appointment> ls = appointmentRepository.findByBookedDate(strDate);
+            String strDate = getFormattedCurrentDate();
+            List<Appointment> ls = appointmentRepository.findByBookedDate(strDate, operatorId);
 
             AppointmentService appointmentService = new AppointmentService();
             List<String> openAppointments = appointmentService.getLeftSlotsOfAppoints(ls);
-            System.out.println("sanjnka" + openAppointments);
 
             return new ResponseEntity<>(openAppointments, HttpStatus.OK);
         } catch (Exception e) {
@@ -119,12 +111,8 @@ public class MainController {
     @PatchMapping("/reschedule_appointment")
     public ResponseEntity<String> rescheduleAppointment(@RequestBody AppointmentRescheduleRequest params) {
         try {
-            Date currentDate = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String strDate = formatter.format(currentDate);
+            String strDate = getFormattedCurrentDate();
 
-            
-            
             Appointment appointment_object = appointmentRepository.getAppointmentByAppointmentId(params.appointmentId);
             
             if(appointment_object == null){

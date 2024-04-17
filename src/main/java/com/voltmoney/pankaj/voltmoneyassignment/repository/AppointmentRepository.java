@@ -9,14 +9,9 @@ import org.springframework.data.repository.query.Param;
 import com.voltmoney.pankaj.voltmoneyassignment.models.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    List<Appointment> findByBooked(boolean booked);
-    
-    // List<Appointment> findByBookedDate(Date bookedDate);
-    
-    List<Appointment> findByOperatorId(int operatorId);
 
-    @Query(value = "SELECT * FROM appointments a WHERE DATE(a.booked_date) = :date and booked = true order by scheduled_time", nativeQuery = true)
-    List<Appointment> findByBookedDate(@Param("date") String date);
+    @Query(value = "SELECT * FROM appointments a WHERE DATE(a.booked_date) = :date and operator_id = :operatorId and booked = true order by scheduled_time", nativeQuery = true)
+    List<Appointment> findByBookedDate(@Param("date") String date, @Param("operatorId") int operatorId);
 
     @Query(value = "SELECT count(*) FROM appointments a WHERE DATE(a.booked_date) = :date and scheduled_time = :st and operator_id = :operatorId and booked = true", nativeQuery = true)
     int checkAppointmentPresent(@Param("date") String date,@Param("operatorId") int operatorId, @Param("st") int st);
