@@ -10,7 +10,12 @@ Before starting of the project I read the problem statement carefully and took s
 
 ## Functionality
 - Build API to get the alredy booked slots
-- Build API to get the slots remaining to book
+- Build API to get the slots remaining to book![Screenshot (973)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/4d6314b4-c675-4bd8-b23d-2e376bff143b)
+![Screenshot (972)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/03300c15-05ea-4dbc-a017-f09e3d361a41)
+![Screenshot (971)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/78c3c9b8-a60e-4359-9f2c-8b2a1d2335b2)
+![Screenshot (970)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/db1708f5-574e-4f12-9dc3-87b8e02f2747)
+![Screenshot (974)](https://github.com/nmastepankaj/voltmoney_assignment/assets/68346633/1da66ab7-d26b-48f9-8770-8079a78e131f)
+
 - Build API to schedule the Appointment
 - Build API to reschedule appointment
 - Build API to cancel appointment
