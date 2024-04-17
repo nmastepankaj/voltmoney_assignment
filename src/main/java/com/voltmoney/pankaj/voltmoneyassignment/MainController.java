@@ -3,6 +3,10 @@ package com.voltmoney.pankaj.voltmoneyassignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import javax.validation.Valid;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,7 +89,8 @@ public class MainController {
     }
 
     @PostMapping("/book_appointment")
-    public ResponseEntity<String> bookAppointment(@RequestBody AppointmentSaveRequest params) {
+    public ResponseEntity<String> bookAppointment(@Valid @RequestBody AppointmentSaveRequest params) {
+
         try {
             Date currentDate = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -92,7 +100,7 @@ public class MainController {
 
             
             if(isExist>0){
-                return new ResponseEntity<>("Appointment Already Booked", HttpStatus.OK);
+                return new ResponseEntity<>("Appointment Already Booked", HttpStatus.BAD_REQUEST);
             }else{
                 Appointment appointment = new Appointment();
                 appointment.setOperatorId(params.operatorId);
@@ -104,6 +112,7 @@ public class MainController {
 
             return new ResponseEntity<>("Appointment Booked between slot " + String.valueOf(params.scheduledTime)+ "-"+String.valueOf(params.scheduledTime+1), HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>("Appointment Not Booked", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -120,7 +129,7 @@ public class MainController {
             }else{
                 int isExist = appointmentRepository.checkAppointmentPresent(strDate, params.operatorId, params.scheduledTime);
                 if(isExist>0){
-                    return new ResponseEntity<>("Appointment Already Booked", HttpStatus.OK);
+                    return new ResponseEntity<>("Appointment Already Booked", HttpStatus.BAD_REQUEST);
                 }
                 appointment_object.setScheduledTime(params.scheduledTime);
                 appointmentRepository.save(appointment_object);
@@ -150,4 +159,11 @@ public class MainController {
         }
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
 }
+
+
